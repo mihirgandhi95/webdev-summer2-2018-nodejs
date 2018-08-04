@@ -1,5 +1,26 @@
-var express = require('express')
+var express = require('express');
+var bodyParser = require('body-parser');
+const mongoose  = require ('mongoose');
+mongoose.connect('mongodb://localhost/webdev-summer2-2018-nodejs');
+
+
 var app = express()
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended : true
+}))
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin",
+        "http://localhost:4200");
+    res.header("Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+});
 
 var session = require('express-session')
 app.use(session({
@@ -40,4 +61,20 @@ function getSession(req,res) {
     res.send(value);
 }
 
-app.listen(3000)
+
+/*var userModel = require('./models/user/user.model.server');
+// userModel.createUser({
+//     username: 'mihir', password: 'mihir'
+// });
+
+var users = [];
+userModel.findAllUsers()
+    .then(function(users){
+        console.log(users);
+    });
+console.log(users);*/
+
+var userService = require('./services/user.service.server');
+userService(app);
+
+app.listen(4000)
