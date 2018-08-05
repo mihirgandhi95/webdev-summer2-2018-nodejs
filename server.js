@@ -76,5 +76,7 @@ console.log(users);*/
 
 var userService = require('./services/user.service.server');
 userService(app);
+require('./services/section.service.server')(app);
+
 
 app.listen(4000)
