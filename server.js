@@ -26,7 +26,9 @@ var session = require('express-session')
 app.use(session({
     resave: false,
     saveUninitialized: true,
-    secret: 'any string'
+    secret: 'any string',
+    cookie: {maxAge: 1800000},
+    rolling: true
 }));
 
 
@@ -79,4 +81,7 @@ userService(app);
 require('./services/section.service.server')(app);
 
 
-app.listen(4000)
+//app.listen(4000)
+
+
+app.listen(process.env.PORT || 4000);
